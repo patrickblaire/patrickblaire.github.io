@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patrick's Games</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            background-color: #fff;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #ff69b4;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .admin-btn {
+            background-color: white;
+            color: #ff69b4;
+            padding: 0.5rem 1.2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .admin-btn:hover {
+            background-color: #fff5f8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: linear-gradient(rgba(255, 105, 180, 0.9), rgba(255, 182, 193, 0.9)), url('https://placehold.co/1920x1080');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: white;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .game-card {
+            background-color: white;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 20px rgba(255, 105, 180, 0.1);
+            border: 1px solid rgba(255, 105, 180, 0.1);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(255, 105, 180, 0.2);
+        }
+
+        .game-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .game-info {
+            padding: 1.8rem;
+        }
+
+        .game-info h3 {
+            color: #ff69b4;
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .game-info p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .play-btn {
+            background-color: #ff69b4;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .play-btn:hover {
+            background-color: #ff1493;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 105, 180, 0.3);
+        }
+
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            z-index: 1000;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .admin-panel h2 {
+            color: #ff69b4;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .admin-panel form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .admin-panel input,
+        .admin-panel textarea {
+            padding: 0.8rem;
+            border: 2px solid rgba(255, 105, 180, 0.2);
+            border-radius: 12px;
+            background-color: white;
+            color: #333;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .admin-panel input:focus,
+        .admin-panel textarea:focus {
+            outline: none;
+            border-color: #ff69b4;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #ff69b4;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #ff1493;
+            transform: rotate(90deg);
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Game iframe styles */
+        .game-iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            background: white;
+            display: none;
+        }
+
+        .game-iframe iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .close-game-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 2001;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .games-grid {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+            .hero {
+                padding: 4rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Patrick's Games</div>
+        <button class="admin-btn" onclick="showAdminPanel()">Admin Login</button>
+    </nav>
+
+    <section class="hero">
+        <h1>Welcome to Patrick's Games</h1>
+        <p>Your destination for awesome HTML5 games!</p>
+    </section>
+
+    <div class="games-grid">
+        <!-- Word Finder Game Card -->
+        <div class="game-card">
+            <img src="https://i.imgur.com/i9Yyy6A.png" alt="Word Finder" class="game-image">
+            <div class="game-info">
+                <h3>Word Finder</h3>
+                <p>Find hidden words in the grid! Words can be horizontal, vertical, and backward. Complete all three stages within the time limit to win the game.</p>
+                <button onclick="playGame('word-finder')" class="play-btn">Play Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="overlay" id="overlay"></div>
+    <div class="admin-panel" id="adminPanel">
+        <button class="close-btn" onclick="hideAdminPanel()">&times;</button>
+        <h2>Admin Login</h2>
+        <div>
+            <input type="text" placeholder="Username" id="username">
+            <input type="password" placeholder="Password" id="password">
+            <button onclick="login()" class="admin-btn">Login</button>
+        </div>
+    </div>
+
+    <!-- Game Upload Panel -->
+    <div class="admin-panel" id="uploadPanel" style="display: none;">
+        <button class="close-btn" onclick="hideUploadPanel()">&times;</button>
+        <h2>Upload New Game</h2>
+        <div>
+            <input type="text" placeholder="Game Title" id="gameTitle">
+            <textarea placeholder="Game Description" id="gameDescription" rows="4"></textarea>
+            <input type="file" accept=".html,.js,.css" multiple>
+            <input type="file" accept="image/*" placeholder="Game Thumbnail">
+            <button onclick="uploadGame()" class="admin-btn">Upload Game</button>
+        </div>
+    </div>
+
+    <!-- Game iframe container -->
+    <div id="gameContainer" class="game-iframe">
+        <button class="close-game-btn" onclick="closeGame()">&times;</button>
+        <iframe id="gameFrame" src=""></iframe>
+    </div>
+
+    <!-- Word Finder Game HTML (hidden) -->
+    <div id="wordFinderGame" style="display: none;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Finder Game</title>
+  <style>
+    body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+    }
+
+    h1 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 2.5em;
+    }
+
+    .container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .screen {
+    display: none;
+    }
+
+    .screen.active {
+    display: block;
+    }
+
+    .title-screen {
+    padding: 40px 20px;
+    }
+
+    .title-screen h1 {
+    font-size: 3em;
+    color: #3498db;
+    margin-bottom: 30px;
+    }
+
+    .game-description {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 40px;
+    line-height: 1.5;
+    }
+
+    .stage-info {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #555;
+    }
+
+    .timer {
+    font-size: 20px;
+    margin: 10px 0;
+    color: #e74c3c;
+    font-weight: bold;
+    }
+
+    .grid-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    }
+
+    .grid {
+    display: inline-grid;
+    gap: 2px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    }
+
+    .cell {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #ddd;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 3px;
+    }
+
+    .cell.selected {
+    background-color: #ffeb3b;
+    }
+
+    .cell.found {
+    background-color: #90ee90;
+    }
+
+    .word-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    }
+
+    .word-item {
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    font-size: 16px;
+    }
+
+    .word-item.found {
+    text-decoration: line-through;
+    background-color: #90ee90;
+    color: #333;
+    }
+
+    .button {
+    padding: 12px 30px;
+    font-size: 18px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+    transition: background-color 0.3s;
+    }
+
+    .button:hover {
+    background-color: #2980b9;
+    }
+
+    .button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    }
+
+    .result-screen {
+    padding: 40px 20px;
+    }
+
+    .result-screen h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    }
+
+    .win-message {
+    color: #27ae60;
+    }
+
+    .lose-message {
+    color: #e74c3c;
+    }
+
+    .result-details {
+    font-size: 18px;
+    margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Title Screen -->
+    <div id="title-screen" class="screen title-screen active">
+    <h1>Word Finder Game</h1>
+    <div class="game-description">
+    Find hidden words in the grid! Words can be horizontal, vertical, and backward.
+    <br>Complete all three stages to win the game.
+    </div>
+    <button id="start-game-btn" class="button">Start Game</button>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+    <h1>Word Finder Game</h1>
+    <div class="stage-info">Stage <span id="current-stage">1</span> of 3</div>
+    <div class="timer">Time Left: <span id="timer">120</span> seconds</div>
+    
+    <div class="grid-container">
+    <div id="grid" class="grid"></div>
+    </div>
+    
+    <div>
+    <div>Words to find:</div>
+    <div id="word-list" class="word-list-container"></div>
+    </div>
+    
+    <button id="next-stage-btn" class="button" style="display: none;">Next Stage</button>
+    <button id="restart-btn" class="button">Restart Stage</button>
+    </div>
+
+    <!-- Win Screen -->
+    <div id="win-screen" class="screen result-screen">
+    <h2 class="win-message">You Win!</h2>
+    <div class="result-details">
+    Congratulations! You've completed all stages and found all the hidden words.
+    </div>
+    <button id="restart-game-btn-win" class="button">Play Again</button>
+    </div>
+
+    <!-- Lose Screen -->
+    <div id="lose-screen" class="screen result-screen">
+    <h2 class="lose-message">Time's Up!</h2>
+    <div class="result-details">
+    You ran out of time. Don't worry, you can try again with new words!
+    </div>
+    <button id="restart-game-btn-lose" class="button">Try Again</button>
+    </div>
+  </div>
+
+  <script>
+    // Word pools for each stage
+    const wordPools = {
+    easy: [
+    "CAT", "DOG", "BIRD", "FISH", "COW", "PIG", "DUCK", "FROG", "GOAT", 
+    "LION", "WOLF", "BEAR", "DEER", "SEAL", "MOUSE", "RAT", "SNAKE", 
+    "HORSE", "SHEEP", "TIGER", "ZEBRA", "FOX", "EAGLE", "HAWK"
+    ],
+    medium: [
+    "ELEPHANT", "TIGER", "LION", "ZEBRA", "MONKEY", "BEAR", "WOLF", "FOX", 
+    "DEER", "HORSE", "GIRAFFE", "LEOPARD", "PANTHER", "JAGUAR", "DOLPHIN", 
+    "WHALE", "SHARK", "OCTOPUS", "PENGUIN", "TURTLE", "RABBIT", "SQUIRREL", 
+    "RACCOON", "BADGER", "BUFFALO", "CAMEL", "CHEETAH", "CROCODILE"
+    ],
+    hard: [
+    "KANGAROO", "PENGUIN", "FLAMINGO", "OSTRICH", "PEACOCK", "SWAN", "DUCK", 
+    "GOOSE", "HAWK", "EAGLE", "PARROT", "ROBIN", "SPARROW", "HERON", "TURKEY",
+    "ALLIGATOR", "BUTTERFLY", "CHIMPANZEE", "DRAGONFLY", "GORILLA", "HEDGEHOG", 
+    "JELLYFISH", "KINGFISHER", "NIGHTINGALE", "ORANGUTAN", "PORCUPINE", 
+    "RHINOCEROS", "SALAMANDER", "TARANTULA", "WOLVERINE"
+    ]
+    };
+
+    // Game configuration
+    const stageConfig = [
+    { gridSize: 8, wordCount: 5, timeLimit: 120 },  // 2 minutes
+    { gridSize: 10, wordCount: 10, timeLimit: 150 }, // 2.5 minutes
+    { gridSize: 12, wordCount: 15, timeLimit: 180 }  // 3 minutes
+    ];
+
+    // Game state
+    let stages = [];
+    let currentStage = 0;
+    let timerInterval;
+    let isSelecting = false;
+    let selectedCells = [];
+    let gridCells = [];
+    let gridData = [];
+    let wordPositions = {};
+
+    // DOM elements
+    const titleScreen = document.getElementById('title-screen');
+    const gameScreen = document.getElementById('game-screen');
+    const winScreen = document.getElementById('win-screen');
+    const loseScreen = document.getElementById('lose-screen');
+    const gridElement = document.getElementById('grid');
+    const wordListElement = document.getElementById('word-list');
+    const timerElement = document.getElementById('timer');
+    const currentStageElement = document.getElementById('current-stage');
+    const nextStageButton = document.getElementById('next-stage-btn');
+    const restartButton = document.getElementById('restart-btn');
+    const startGameButton = document.getElementById('start-game-btn');
+    const restartGameButtonWin = document.getElementById('restart-game-btn-win');
+    const restartGameButtonLose = document.getElementById('restart-game-btn-lose');
+
+    // Direction vectors for word placement (only horizontal and vertical, both forward and backward)
+    const directions = [
+    { x: 1, y: 0 },   // Right
+    { x: 0, y: 1 },   // Down
+    { x: -1, y: 0 },  // Left (backward horizontal)
+    { x: 0, y: -1 }   // Up (backward vertical)
+    ];
+
+    // Initialize the game
+    function initGame() {
+    // Generate random stages
+    generateRandomStages();
+    
+    // Set up event listeners
+    setupEventListeners();
+    
+    // Show title screen
+    showScreen('title-screen');
+    }
+
+    // Generate random stages with random words
+    function generateRandomStages() {
+    stages = [];
+    
+    stageConfig.forEach((config, index) => {
+    let wordPool;
+    if (index === 0) wordPool = wordPools.easy;
+    else if (index === 1) wordPool = wordPools.medium;
+    else wordPool = wordPools.hard;
+    
+    // Shuffle and pick random words
+    const shuffledWords = shuffleArray([...wordPool]);
+    const selectedWords = shuffledWords.slice(0, config.wordCount);
+    
+    stages.push({
+    gridSize: config.gridSize,
+    words: selectedWords,
+    foundWords: [],
+    timeLimit: config.timeLimit
+    });
+    });
+    }
+
+    // Generate new words for current stage
+    function generateNewWordsForCurrentStage() {
+    const config = stageConfig[currentStage];
+    let wordPool;
+    
+    if (currentStage === 0) wordPool = wordPools.easy;
+    else if (currentStage === 1) wordPool = wordPools.medium;
+    else wordPool = wordPools.hard;
+    
+    // Shuffle and pick random words
+    const shuffledWords = shuffleArray([...wordPool]);
+    const selectedWords = shuffledWords.slice(0, config.wordCount);
+    
+    stages[currentStage].words = selectedWords;
+    stages[currentStage].foundWords = [];
+    }
+
+    // Set up event listeners
+    function setupEventListeners() {
+    startGameButton.addEventListener('click', () => {
+    showScreen('game-screen');
+    currentStage = 0;
+    startStage(currentStage);
+    });
+    
+    nextStageButton.addEventListener('click', () => {
+    currentStage++;
+    if (currentStage < stages.length) {
+    startStage(currentStage);
+    } else {
+    showScreen('win-screen');
+    }
+    });
+    
+    restartButton.addEventListener('click', () => {
+    // Generate new words for current stage
+    generateNewWordsForCurrentStage();
+    startStage(currentStage);
+    });
+    
+    restartGameButtonWin.addEventListener('click', () => {
+    generateRandomStages();
+    showScreen('game-screen');
+    currentStage = 0;
+    startStage(currentStage);
+    });
+    
+    restartGameButtonLose.addEventListener('click', () => {
+    generateRandomStages();
+    showScreen('game-screen');
+    currentStage = 0;
+    startStage(currentStage);
+    });
+    
+    // Handle mouse up outside the grid
+    document.addEventListener('mouseup', () => {
+    if (isSelecting) {
+    isSelecting = false;
+    checkSelection();
+    }
+    });
+    }
+
+    // Show a specific screen
+    function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(screen => {
+    screen.classList.remove('active');
+    });
+    document.getElementById(screenId).classList.add('active');
+    }
+
+    // Start a stage
+    function startStage(stageIndex) {
+    const stage = stages[stageIndex];
+    
+    // Reset stage data
+    stage.foundWords = [];
+    wordPositions = {};
+    
+    // Update UI
+    currentStageElement.textContent = stageIndex + 1;
+    nextStageButton.style.display = 'none';
+    
+    // Create grid
+    createGrid(stage);
+    
+    // Update word list
+    updateWordList(stage);
+    
+    // Start timer with stage-specific time limit
+    startTimer(stage.timeLimit);
+    }
+
+    // Create the grid for the current stage
+    function createGrid(stage) {
+    const gridSize = stage.gridSize;
+    
+    // Clear grid
+    gridElement.innerHTML = '';
+    gridElement.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+    
+    // Initialize grid data with empty cells
+    gridData = Array(gridSize * gridSize).fill('');
+    gridCells = [];
+    
+    // Place words in the grid
+    let placedWords = [];
+    for (const word of stage.words) {
+    if (placeWord(word, gridSize)) {
+    placedWords.push(word);
+    }
+    }
+    
+    // If any words couldn't be placed, try again with a clean grid
+    if (placedWords.length < stage.words.length) {
+    console.log("Some words couldn't be placed. Retrying with a clean grid.");
+    gridData = Array(gridSize * gridSize).fill('');
+    wordPositions = {};
+    placedWords = [];
+    
+    // Try placing words again, but in order of length (longest first)
+    const sortedWords = [...stage.words].sort((a, b) => b.length - a.length);
+    for (const word of sortedWords) {
+    if (placeWord(word, gridSize)) {
+    placedWords.push(word);
+    } else {
+    // If still can't place, force placement
+    forceWordPlacement(word, gridSize);
+    placedWords.push(word);
+    }
+    }
+    }
+    
+    // Verify all words are in the grid
+    for (const word of stage.words) {
+    if (!wordPositions[word]) {
+    console.error(`Word "${word}" is not in the grid!`);
+    // Force placement as a last resort
+    forceWordPlacement(word, gridSize);
+    }
+    }
+    
+    // Fill empty cells with random letters
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    for (let i = 0; i < gridData.length; i++) {
+    if (gridData[i] === '') {
+    gridData[i] = letters[Math.floor(Math.random() * letters.length)];
+    }
+    }
+    
+    // Create grid cells
+    for (let y = 0; y < gridSize; y++) {
+    for (let x = 0; x < gridSize; x++) {
+    const index = y * gridSize + x;
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.textContent = gridData[index];
+    cell.dataset.x = x;
+    cell.dataset.y = y;
+    cell.dataset.index = index;
+    
+    // Add event listeners
+    cell.addEventListener('mousedown', (e) => {
+    e.preventDefault(); // Prevent text selection
+    isSelecting = true;
+    selectedCells = [cell];
+    cell.classList.add('selected');
+    });
+    
+    cell.addEventListener('mouseover', () => {
+    if (isSelecting) {
+    // Only add if not already in the selection
+    if (!selectedCells.includes(cell)) {
+    selectedCells.push(cell);
+    cell.classList.add('selected');
+    }
+    }
+    });
+    
+    gridElement.appendChild(cell);
+    gridCells.push(cell);
+    }
+    }
+    }
+
+    // Place a word in the grid
+    function placeWord(word, gridSize) {
+    let placed = false;
+    let attempts = 0;
+    const maxAttempts = 100;
+    
+    while (!placed && attempts < maxAttempts) {
+    attempts++;
+    
+    // Choose random direction and starting position
+    const direction = directions[Math.floor(Math.random() * directions.length)];
+    const startX = Math.floor(Math.random() * gridSize);
+    const startY = Math.floor(Math.random() * gridSize);
+    
+    // Check if word fits
+    let fits = true;
+    let positions = [];
+    
+    for (let i = 0; i < word.length; i++) {
+    const x = startX + i * direction.x;
+    const y = startY + i * direction.y;
+    
+    // Check boundaries
+    if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) {
+    fits = false;
+    break;
+    }
+    
+    const index = y * gridSize + x;
+    
+    // Check if cell is empty or has the same letter
+    if (gridData[index] !== '' && gridData[index] !== word[i]) {
+    fits = false;
+    break;
+    }
+    
+    positions.push(index);
+    }
+    
+    // Place word if it fits
+    if (fits) {
+    for (let i = 0; i < word.length; i++) {
+    const x = startX + i * direction.x;
+    const y = startY + i * direction.y;
+    const index = y * gridSize + x;
+    gridData[index] = word[i];
+    }
+    
+    // Store word positions for checking
+    wordPositions[word] = positions;
+    placed = true;
+    }
+    }
+    
+    return placed;
+    }
+
+    // Force word placement if random placement fails
+    function forceWordPlacement(word, gridSize) {
+    console.log(`Forcing placement for word: ${word}`);
+    
+    // Try each direction systematically
+    for (const direction of directions) {
+    // Try different starting positions
+    for (let y = 0; y < gridSize; y++) {
+    for (let x = 0; x < gridSize; x++) {
+    // Check if word fits from this position in this direction
+    let fits = true;
+    let positions = [];
+    
+    for (let i = 0; i < word.length; i++) {
+    const newX = x + i * direction.x;
+    const newY = y + i * direction.y;
+    
+    // Check boundaries
+    if (newX < 0 || newX >= gridSize || newY < 0 || newY >= gridSize) {
+    fits = false;
+    break;
+    }
+    
+    const index = newY * gridSize + newX;
+    
+    // Check if cell is empty or has the same letter
+    if (gridData[index] !== '' && gridData[index] !== word[i]) {
+    fits = false;
+    break;
+    }
+    
+    positions.push(index);
+    }
+    
+    // Place word if it fits
+    if (fits) {
+    for (let i = 0; i < word.length; i++) {
+    const newX = x + i * direction.x;
+    const newY = y + i * direction.y;
+    const index = newY * gridSize + newX;
+    gridData[index] = word[i];
+    }
+    
+    // Store word positions for checking
+    wordPositions[word] = positions;
+    return true;
+    }
+    }
+    }
+    }
+    
+    // Last resort: place horizontally at the top, overwriting other letters if needed
+    let positions = [];
+    for (let i = 0; i < word.length; i++) {
+    const index = i;
+    gridData[index] = word[i];
+    positions.push(index);
+    }
+    
+    wordPositions[word] = positions;
+    console.log(`Emergency placement for word: ${word}`);
+    return true;
+    }
+
+    // Update the word list display
+    function updateWordList(stage) {
+    wordListElement.innerHTML = '';
+    
+    stage.words.forEach(word => {
+    const wordItem = document.createElement('div');
+    wordItem.className = 'word-item';
+    if (stage.foundWords.includes(word)) {
+    wordItem.classList.add('found');
+    }
+    wordItem.textContent = word;
+    wordItem.dataset.word = word;
+    wordListElement.appendChild(wordItem);
+    });
+    }
+
+    // Check if the selected cells form a word
+    function checkSelection() {
+    if (selectedCells.length < 2) {
+    clearSelection();
+    return;
+    }
+    
+    const stage = stages[currentStage];
+    
+    // Get the word from selected cells
+    const selectedWord = selectedCells.map(cell => cell.textContent).join('');
+    const reversedWord = selectedWord.split('').reverse().join('');
+    
+    // Check if it's a valid word (forward or backward)
+    const wordIndex = stage.words.findIndex(word => 
+    word === selectedWord || word === reversedWord
+    );
+    
+    if (wordIndex !== -1 && !stage.foundWords.includes(stage.words[wordIndex])) {
+    // Word found!
+    const foundWord = stage.words[wordIndex];
+    stage.foundWords.push(foundWord);
+    
+    // Mark cells as found
+    selectedCells.forEach(cell => {
+    cell.classList.remove('selected');
+    cell.classList.add('found');
+    });
+    
+    // Update word list
+    const wordItem = document.querySelector(`.word-item[data-word="${foundWord}"]`);
+    if (wordItem) {
+    wordItem.classList.add('found');
+    }
+    
+    // Check if all words are found
+    if (stage.foundWords.length === stage.words.length) {
+    clearInterval(timerInterval);
+    setTimeout(() => {
+    if (currentStage < stages.length - 1) {
+    alert('Great job! You found all the words!');
+    nextStageButton.style.display = 'inline-block';
+    } else {
+    showScreen('win-screen');
+    }
+    }, 500);
+    }
+    } else {
+    clearSelection();
+    }
+    }
+
+    // Clear the current selection
+    function clearSelection() {
+    selectedCells.forEach(cell => {
+    cell.classList.remove('selected');
+    });
+    selectedCells = [];
+    }
+
+    // Start the timer
+    function startTimer(seconds) {
+    clearInterval(timerInterval);
+    timerElement.textContent = seconds;
+    
+    timerInterval = setInterval(() => {
+    seconds--;
+    timerElement.textContent = seconds;
+    
+    if (seconds <= 0) {
+    clearInterval(timerInterval);
+    showScreen('lose-screen');
+    }
+    }, 1000);
+    }
+
+    // Shuffle array (Fisher-Yates algorithm)
+    function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+    }
+
+    // Initialize the game when the page loads
+    window.onload = initGame;
+  </script>
+</body>
+</html>
+    </div>
+
+    <script>
+        // Admin credentials
+        const adminCredentials = {
+            username: "patrickblaire",
+            password: "patrikhandra"
+        };
+
+        function showAdminPanel() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'block';
+        }
+
+        function hideAdminPanel() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+
+        function showUploadPanel() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('uploadPanel').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+
+        function hideUploadPanel() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('uploadPanel').style.display = 'none';
+        }
+
+        // Close panels when clicking outside
+        document.getElementById('overlay').addEventListener('click', function() {
+            hideAdminPanel();
+            hideUploadPanel();
+        });
+
+        // Login function
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                alert("Login successful!");
+                showUploadPanel();
+            } else {
+                alert("Invalid credentials. Please try again.");
+            }
+        }
+
+        // Upload game function
+        function uploadGame() {
+            const gameTitle = document.getElementById('gameTitle').value;
+            const gameDescription = document.getElementById('gameDescription').value;
+            
+            if (!gameTitle || !gameDescription) {
+                alert("Please fill in all fields");
+                return;
+            }
+            
+            // Add the new game to the grid
+            const gamesGrid = document.querySelector('.games-grid');
+            const newGameCard = document.createElement('div');
+            newGameCard.className = 'game-card';
+            newGameCard.innerHTML = `
+                <img src="https://placehold.co/400x300/ff69b4/ffffff?text=${gameTitle}" alt="${gameTitle}" class="game-image">
+                <div class="game-info">
+                    <h3>${gameTitle}</h3>
+                    <p>${gameDescription}</p>
+                    <button onclick="alert('Game not available yet')" class="play-btn">Play Now</button>
+                </div>
+            `;
+            gamesGrid.appendChild(newGameCard);
+            
+            alert(`Game "${gameTitle}" has been added!`);
+            hideUploadPanel();
+        }
+
+        // Play game function
+        function playGame(gameId) {
+            if (gameId === 'word-finder') {
+                // Create a blob from the Word Finder game HTML
+                const gameHtml = document.getElementById('wordFinderGame').innerHTML;
+                const blob = new Blob([gameHtml], {type: 'text/html'});
+                const url = URL.createObjectURL(blob);
+                
+                // Set the iframe source and show the game container
+                document.getElementById('gameFrame').src = url;
+                document.getElementById('gameContainer').style.display = 'block';
+            } else {
+                alert('Game not available yet');
+            }
+        }
+
+        // Close game function
+        function closeGame() {
+            document.getElementById('gameContainer').style.display = 'none';
+            document.getElementById('gameFrame').src = '';
+        }
+    </script>
+</body>
+</html>
